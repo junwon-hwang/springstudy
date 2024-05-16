@@ -2,7 +2,6 @@ package com.study.springstudy.webservlet.chap02.v3.controller;
 
 import com.study.springstudy.webservlet.MemberMemoryRepo;
 import com.study.springstudy.webservlet.ModelAndView;
-import com.study.springstudy.webservlet.View;
 import com.study.springstudy.webservlet.entity.Member;
 
 import java.util.List;

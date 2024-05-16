@@ -1,18 +1,16 @@
-package com.study.springstudy.webservlet.chap02.v3.controller;
+package com.study.springstudy.webservlet.chap02.v4.controller;
 
 import com.study.springstudy.webservlet.MemberMemoryRepo;
-import com.study.springstudy.webservlet.ModelAndView;
+import com.study.springstudy.webservlet.Model;
 import com.study.springstudy.webservlet.entity.Member;
-
 import java.util.Map;
 
-public class SaveController implements ControllerV3{
+public class SaveController implements ControllerV4{
 
     private MemberMemoryRepo repo = MemberMemoryRepo.getInstance();
 
     @Override
-    public ModelAndView process(Map<String, String> paramMap) {
-
+    public String process(Map<String, String> paramMap, Model model) {
         String userName = paramMap.get("userName");
         String account = paramMap.get("account");
         String password = paramMap.get("password");
@@ -22,5 +20,6 @@ public class SaveController implements ControllerV3{
 
         repo.save(member);
 
-        return new ModelAndView("redirect:/chap02/v3/show");    }
+        return "redirect:/chap02/v4/show";
+    }
 }
