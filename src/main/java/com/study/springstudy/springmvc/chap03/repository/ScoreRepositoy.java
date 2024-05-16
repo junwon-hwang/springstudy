@@ -12,6 +12,6 @@ public interface ScoreRepositoy {
     // 저장소에서 데이터 전체조회하기
     List<Score> findAll();
     // 저장소에서 데이터 개별조회하기
-
+    Score findOne(long stuNum);
     // 저장소에서 데이터 삭제하기
 }

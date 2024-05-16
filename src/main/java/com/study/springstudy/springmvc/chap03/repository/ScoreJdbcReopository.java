@@ -74,7 +74,56 @@ public class ScoreJdbcReopository implements ScoreRepositoy {
         return scoreList;
     }
 
+    @Override
+    public Score findOne(long stuNum) {
+
+        try(Connection conn =connect()){
+            String sql = "SELECT * FROM tbl_score WHERE stu_num = ?";
+
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setLong(1,stuNum);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if(rs.next()){
+                return  new Score(rs);
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
     private Connection connect() throws SQLException {
         return DriverManager.getConnection(url, username, password);
+    }
+
+    public int[] findRankByStuNum(long stuNum) {
+        try (Connection conn = connect()) {
+
+            String sql = "SELECT A.stu_num, A.rank, A.cnt" +
+                    " FROM (SELECT *, " +
+                    "           RANK() OVER (ORDER BY average DESC) AS rank, " +
+                    "           COUNT(*) OVER() AS cnt" +
+                    "       FROM tbl_score) A " +
+                    "WHERE A.stu_num = ?";
+
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setLong(1, stuNum);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return new int[] {
+                        rs.getInt("rank"),
+                        rs.getInt("cnt")
+                };
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
