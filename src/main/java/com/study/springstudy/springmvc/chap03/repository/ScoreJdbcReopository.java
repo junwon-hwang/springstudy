@@ -1,10 +1,9 @@
 package com.study.springstudy.springmvc.chap03.repository;
 
 import com.study.springstudy.springmvc.chap03.entity.Score;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ScoreJdbcReopository implements ScoreRepositoy {
 
@@ -48,5 +47,34 @@ public class ScoreJdbcReopository implements ScoreRepositoy {
         }
 
         return false;
+
+
+
+    }
+
+    @Override
+    public List<Score> findAll() {
+        List<Score> scoreList = new ArrayList<>();
+
+        try(Connection conn = connect()){
+
+            String sql = "SELECT * FROM tbl_score";
+
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+
+            while(rs.next()){
+               Score s = new Score(rs);
+               scoreList.add(s);
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return scoreList;
+    }
+
+    private Connection connect() throws SQLException {
+        return DriverManager.getConnection(url, username, password);
     }
 }

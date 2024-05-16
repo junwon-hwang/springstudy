@@ -4,9 +4,12 @@ import com.study.springstudy.springmvc.chap03.dto.ScorePostDto;
 import com.study.springstudy.springmvc.chap03.entity.Score;
 import com.study.springstudy.springmvc.chap03.repository.ScoreJdbcReopository;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 /*
     # 요청 URL
@@ -30,8 +33,12 @@ public class ScoreController {
     private ScoreJdbcReopository repository = new ScoreJdbcReopository();
 
     @GetMapping("/list")
-    public String list() {
+    public String list(Model model) {
         System.out.println("/score/list : GET!");
+
+        List<Score> scoreList = repository.findAll();
+        model.addAttribute("sList",scoreList);
+
         return "score/score-list";
     }
 
@@ -44,7 +51,9 @@ public class ScoreController {
         Score score = new Score(dto);
         repository.save(score);
 
-        return "";
+        // 다시 조회로 돌아가야 저장된 데이터를 볼 수 있음
+        //
+        return "redirect:/score/list";
     }
 
     @PostMapping("/remove")

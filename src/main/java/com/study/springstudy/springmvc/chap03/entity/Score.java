@@ -2,6 +2,9 @@ package com.study.springstudy.springmvc.chap03.entity;
 
 import com.study.springstudy.springmvc.chap03.dto.ScorePostDto;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 // 역할: 데이터베이스의 테이블의 컬럼과 1:1로 매칭되는 필드를 가진 객체
 public class Score {
     private long stuNum;
@@ -13,6 +16,18 @@ public class Score {
     private double average;
     private Grade Grade;
 
+
+    public Score(ResultSet rs) throws SQLException {
+        this.stuNum = rs.getLong("stu_num");
+        this.stuName = rs.getString("stu_name");
+        this.kor = rs.getInt("kor");
+        this.eng = rs.getInt("eng");
+        this.math = rs.getInt("math");
+        this.total = rs.getInt("total");
+        this.average = rs.getDouble("average");
+        this.Grade = Grade.valueOf(rs.getNString("grade"));
+
+    }
 
     public Score(ScorePostDto dto){
         this.stuName = dto.getName();
