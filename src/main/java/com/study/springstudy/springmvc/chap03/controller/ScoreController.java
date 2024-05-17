@@ -2,14 +2,17 @@ package com.study.springstudy.springmvc.chap03.controller;
 
 import com.study.springstudy.springmvc.chap03.dto.ScorePostDto;
 import com.study.springstudy.springmvc.chap03.entity.Score;
-import com.study.springstudy.springmvc.chap03.repository.ScoreJdbcReopository;
+import com.study.springstudy.springmvc.chap03.repository.ScoreRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+
 
 /*
     # 요청 URL
@@ -20,7 +23,7 @@ import java.util.List;
     - /score/register : POST
 
     3. 성적정보 삭제 요청
-    - /score/remove : POST
+    - /score/remove : GET
 
     4. 성적정보 상세 조회 요청
     - /score/detail : GET
@@ -30,14 +33,29 @@ import java.util.List;
 public class ScoreController {
 
     // 의존객체 설정
-    private ScoreJdbcReopository repository = new ScoreJdbcReopository();
+    private ScoreRepository repository;
+
+    @Autowired
+    public ScoreController(ScoreRepository repositoy){
+        this.repository = repositoy;
+    }
 
     @GetMapping("/list")
-    public String list(Model model) {
+    public String list(@RequestParam(defaultValue = "num") String sort, Model model) {
         System.out.println("/score/list : GET!");
 
-        List<Score> scoreList = repository.findAll();
+        List<Score> scoreList = repository.findAll(sort);
+
+//        switch(sort){
+//            case"avg":
+//                scoreList.stream()
+//                        .sorted(Comparator.comparing(Score::getAverage))
+//                        .collect(Collectors.toList());
+//        }
+
         model.addAttribute("sList",scoreList);
+
+
 
         return "score/score-list";
     }
@@ -56,10 +74,13 @@ public class ScoreController {
         return "redirect:/score/list";
     }
 
-    @PostMapping("/remove")
-    public String remove() {
+    @GetMapping("/remove")
+    public String remove(long sn) {
         System.out.println("/score/remove : POST!");
-        return "";
+
+        repository.delete(sn);
+
+        return "redirect:/score/list";
     }
 
     @GetMapping("/detail")

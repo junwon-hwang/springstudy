@@ -1,11 +1,15 @@
 package com.study.springstudy.springmvc.chap03.repository;
 
 import com.study.springstudy.springmvc.chap03.entity.Score;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ScoreJdbcReopository implements ScoreRepositoy {
+@Repository
+public class ScoreJdbcReopository implements ScoreRepository {
 
 
     private String url = "jdbc:mariadb://localhost:3306/spring5";
@@ -53,12 +57,12 @@ public class ScoreJdbcReopository implements ScoreRepositoy {
     }
 
     @Override
-    public List<Score> findAll() {
+    public List<Score> findAll(String sort) {
         List<Score> scoreList = new ArrayList<>();
 
         try(Connection conn = connect()){
 
-            String sql = "SELECT * FROM tbl_score";
+            String sql = "SELECT * FROM tbl_score " + sortCondition(sort);
 
             PreparedStatement pstmt = conn.prepareStatement(sql);
             ResultSet rs = pstmt.executeQuery();
@@ -74,6 +78,22 @@ public class ScoreJdbcReopository implements ScoreRepositoy {
         return scoreList;
     }
 
+    private String sortCondition(String sort) {
+        String sortSql = "ORDER BY ";
+        switch (sort){
+            case "num":
+                sortSql += "stu_num";
+                break;
+            case"name":
+                sortSql += "stu_name";
+                break;
+            case"avg":
+                sortSql += "average DESC";
+                break;
+        }
+        return sortSql;
+    }
+
     @Override
     public Score findOne(long stuNum) {
 
@@ -84,6 +104,7 @@ public class ScoreJdbcReopository implements ScoreRepositoy {
             pstmt.setLong(1,stuNum);
 
             ResultSet rs = pstmt.executeQuery();
+            System.out.println(rs);
 
             if(rs.next()){
                 return  new Score(rs);
@@ -126,4 +147,24 @@ public class ScoreJdbcReopository implements ScoreRepositoy {
         }
         return null;
     }
+
+    @Override
+    public boolean delete(long stuNum) {
+        try(Connection conn = connect()){
+            String sql = "DELETE FROM tbl_score WHERE stu_num = ?";
+
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setLong(1,stuNum);
+
+            int result = pstmt.executeUpdate();
+
+            if(result==1) return true;
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return true;
+    }
+
 }
