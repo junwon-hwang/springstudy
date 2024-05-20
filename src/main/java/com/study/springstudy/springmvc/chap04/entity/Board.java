@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
     );
  */
 
+// DB테이블 -> 1:1매칭 필드 -> repository(interface) -> 구현체(board repo) ->
 
 @Setter @Getter @ToString
 @EqualsAndHashCode
