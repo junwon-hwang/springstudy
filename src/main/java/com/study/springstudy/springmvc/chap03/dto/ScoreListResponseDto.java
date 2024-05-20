@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 public class ScoreListResponseDto {
-    private long stuNum; // 학번
+    private final long stuNum; // 학번
     private String maskingName; // 첫글자 빼고 모두 별처리
     private double average; // 평균
     private String grade; // 등급

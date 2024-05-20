@@ -1,12 +1,14 @@
 package com.study.springstudy.springmvc.chap03.entity;
 
+import com.study.springstudy.springmvc.chap03.dto.ScoreModifyRequestDto;
 import com.study.springstudy.springmvc.chap03.dto.ScorePostDto;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-// 역할: 데이터베이스의 테이블의 컬럼과 1:1로 매칭되는 필드를 가진 객체
+// 역할: 데이터베이스의 테이블의 컬럼과 1대1로 매칭되는 필드를 가진 객체
 public class Score {
+
     private long stuNum;
     private String stuName;
     private int kor;
@@ -14,8 +16,7 @@ public class Score {
     private int math;
     private int total;
     private double average;
-    private Grade Grade;
-
+    private Grade grade;
 
     public Score(ResultSet rs) throws SQLException {
         this.stuNum = rs.getLong("stu_num");
@@ -25,56 +26,46 @@ public class Score {
         this.math = rs.getInt("math");
         this.total = rs.getInt("total");
         this.average = rs.getDouble("average");
-        this.Grade = Grade.valueOf(rs.getNString("grade"));
-
+        this.grade = Grade.valueOf(rs.getString("grade"));
     }
 
-    public Score(ScorePostDto dto){
+
+    public Score(ScorePostDto dto) {
         this.stuName = dto.getName();
         this.kor = dto.getKor();
         this.eng = dto.getEng();
         this.math = dto.getMath();
-        this.total = kor + eng + math;
-        this.average = total/3.0;
-        this.Grade = calcGrade();
+        calculate();
     }
 
-    private Grade calcGrade(){
-        if(average>=90){
+    public Score(ScoreModifyRequestDto dto) {
+        this.stuNum = dto.getStuNum();
+        this.kor = dto.getKor();
+        this.eng = dto.getEng();
+        this.math = dto.getMath();
+        calculate();
+    }
+
+    private void calculate() {
+        this.total = kor + eng + math;
+        this.average = total / 3.0;
+        this.grade = calcGrade();
+    }
+
+    private Grade calcGrade() {
+        if (average >= 90) {
             return Grade.A;
-        }else if(average>=80){
+        } else if (average >= 80) {
             return Grade.B;
-        }else if(average>=70){
+        } else if (average >= 70) {
             return Grade.C;
-        }else if(average>=60){
+        } else if (average >= 60) {
             return Grade.D;
-        }else{
+        } else {
             return Grade.F;
         }
     }
 
-
-    @Override
-    public String toString() {
-        return "Score{" +
-                "stuNum=" + stuNum +
-                ", stuName='" + stuName + '\'' +
-                ", kor=" + kor +
-                ", eng=" + eng +
-                ", math=" + math +
-                ", total=" + total +
-                ", average=" + average +
-                ", Grade=" + Grade +
-                '}';
-    }
-
-    public int getMath() {
-        return math;
-    }
-
-    public void setMath(int math) {
-        this.math = math;
-    }
 
     public long getStuNum() {
         return stuNum;
@@ -108,6 +99,14 @@ public class Score {
         this.eng = eng;
     }
 
+    public int getMath() {
+        return math;
+    }
+
+    public void setMath(int math) {
+        this.math = math;
+    }
+
     public int getTotal() {
         return total;
     }
@@ -124,11 +123,25 @@ public class Score {
         this.average = average;
     }
 
-    public com.study.springstudy.springmvc.chap03.entity.Grade getGrade() {
-        return Grade;
+    public Grade getGrade() {
+        return grade;
     }
 
-    public void setGrade(com.study.springstudy.springmvc.chap03.entity.Grade grade) {
-        Grade = grade;
+    public void setGrade(Grade grade) {
+        this.grade = grade;
+    }
+
+    @Override
+    public String toString() {
+        return "Score{" +
+                "stuNum=" + stuNum +
+                ", stuName='" + stuName + '\'' +
+                ", kor=" + kor +
+                ", eng=" + eng +
+                ", math=" + math +
+                ", total=" + total +
+                ", average=" + average +
+                ", grade=" + grade +
+                '}';
     }
 }
