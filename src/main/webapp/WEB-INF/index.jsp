@@ -5,6 +5,13 @@
 <head>
   <meta charset="UTF-8">
   <title>Web Study</title>
+  <style>
+       body{
+        background:url('/assets/img/공룡.jpeg');
+        background-repeat: no-repeat;
+       }
+  </style>
+
 </head>
 <body>
   <h1>hello!!! JSP</h1>
@@ -15,7 +22,10 @@
   <a href="/chap02/v3/join">회원가입하기(front v3)</a> <br>
   <a href="/chap02/v4/join">회원가입하기(front v4)</a> <br>
   <a href="/chap02/v5/join">회원가입하기(front v5)</a> <br>
-  
+  <br>
   <a href="/score/list">성적정보 관리 프로그램</a> <br>
+  <br>
+  <a href="/board/list">게시물 관리 프로그램</a> <br>
+
 </body>
 </html>
