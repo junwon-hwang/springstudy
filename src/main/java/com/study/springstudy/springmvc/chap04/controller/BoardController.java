@@ -94,6 +94,7 @@ public class BoardController {
 
         // 2. 데이터 베이스로부터 해당 글번호 데이터 조회하기
         Board view = repo.findOne(bno);
+        if(view != null) repo.upViewCount(bno);
 
         // 3. JSP파일에 조회한 데이터 보내기
         model.addAttribute("bbb",new BoardDetailReponseDto(view));

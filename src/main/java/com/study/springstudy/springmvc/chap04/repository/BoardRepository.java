@@ -19,5 +19,8 @@ public interface BoardRepository {
     // 게시물 삭제
     boolean delete(int boardNo);
 
+    // 조회수 상승
+    void upViewCount(int boardNo);
+
 }
 
