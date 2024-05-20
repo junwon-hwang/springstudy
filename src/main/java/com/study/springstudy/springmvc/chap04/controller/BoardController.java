@@ -1,6 +1,7 @@
 package com.study.springstudy.springmvc.chap04.controller;
 
 
+import com.study.springstudy.springmvc.chap04.dto.BoardDetailReponseDto;
 import com.study.springstudy.springmvc.chap04.dto.BoardListResponseDto;
 import com.study.springstudy.springmvc.chap04.dto.BoardWriteRequestDto;
 import com.study.springstudy.springmvc.chap04.entity.Board;
@@ -80,14 +81,23 @@ public class BoardController {
     // 4. 게시글 삭제 요청 (/board/delete : GET)
     // -> 목록조회 요청 리다이렉션
     @GetMapping("/delete")
-    public String delete(int boardNo){
-        repo.delete(boardNo);
+    public String delete(int bno){
+        repo.delete(bno);
         return "redirect:/board/list";
     }
 
     // 5. 게시글 상세 조회 (/board/detail : GET)
     @GetMapping("/detail")
-    public String detail(){
+    public String detail(int bno,Model model){
+
+        // 1. 상세조회하고 싶은 글번호를 읽기
+
+        // 2. 데이터 베이스로부터 해당 글번호 데이터 조회하기
+        Board view = repo.findOne(bno);
+
+        // 3. JSP파일에 조회한 데이터 보내기
+        model.addAttribute("bbb",new BoardDetailReponseDto(view));
+
         return "/board/detail";
     }
 }

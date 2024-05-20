@@ -35,7 +35,7 @@
 
           <c:forEach var="b" items="${bList}">
             <div class="card-wrapper">
-              <section class="card" data-bno="1">
+              <section class="card" data-bno="${b.bno}">
                 <div class="card-title-wrapper">
                   <h2 class="card-title">${b.shortTitle}</h2>
                   <div class="time-view-wrapper">
@@ -54,7 +54,7 @@
                 </div>
               </section>
               <div class="card-btn-group">
-                <button class="del-btn" data-href="#">
+                <button class="del-btn" data-href="/board/delete?bno=${b.bno}">
                   <i class="fas fa-times"></i>
                 </button>
               </div>
@@ -89,12 +89,13 @@
         const cancelDelete = document.getElementById('cancelDelete'); // 모달 삭제 취소 버튼
 
         $cardContainer.addEventListener('click', e => {
-          // 삭제 버튼을 눌렀다면~
+          // 삭제 버튼을 눌렀다면~ 삭제버튼 분기처리
           if (e.target.matches('.card-btn-group *')) {
             console.log('삭제버튼 클릭');
             modal.style.display = 'flex'; // 모달 창 띄움
 
             const $delBtn = e.target.closest('.del-btn');
+            // 삭제 링크 주소 얻기
             const deleteLocation = $delBtn.dataset.href;
 
             // 확인 버튼 이벤트
