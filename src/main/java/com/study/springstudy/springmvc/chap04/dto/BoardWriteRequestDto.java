@@ -4,6 +4,8 @@ import com.study.springstudy.springmvc.chap04.entity.Board;
 import lombok.*;
 
 // dto의 필드명은 반드시 html form태그의 name속성과 일치해야함
+// dto는 클라이언트와 JSP 요청/응답
+
 @Setter @Getter @ToString
 @NoArgsConstructor
 @AllArgsConstructor
