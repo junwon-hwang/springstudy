@@ -26,7 +26,6 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class Board {
 
     private int boardNo; // 게시글번호

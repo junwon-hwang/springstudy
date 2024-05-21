@@ -2,11 +2,14 @@ package com.study.springstudy.springmvc.chap03.entity;
 
 import com.study.springstudy.springmvc.chap03.dto.ScoreModifyRequestDto;
 import com.study.springstudy.springmvc.chap03.dto.ScorePostDto;
+import lombok.AllArgsConstructor;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 // 역할: 데이터베이스의 테이블의 컬럼과 1대1로 매칭되는 필드를 가진 객체
+@AllArgsConstructor
+// 마이바티스에서는 ALLArgsConstructor 필수
 public class Score {
 
     private long stuNum;
@@ -17,6 +20,8 @@ public class Score {
     private int total;
     private double average;
     private Grade grade;
+
+
 
     public Score(ResultSet rs) throws SQLException {
         this.stuNum = rs.getLong("stu_num");
