@@ -6,6 +6,7 @@
 <mapper namespace="com.study.springstudy.springmvc.chap04.mapper.BoardMapper">
     <select id="findAll" resultType="Board" >
         SELECT * FROM tbl_board
+        WHERE title LIKE CONCAT ('%', #{keyword} , '%')
         ORDER BY board_no DESC
         LIMIT #{pageStart},#{amount}
     </select>

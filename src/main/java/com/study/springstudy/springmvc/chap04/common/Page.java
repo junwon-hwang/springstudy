@@ -11,6 +11,7 @@ public class Page {
     private int amount; // 클라이언트가 요청한 한 페이지당 게시물 목록 수
 
 
+
     // 파라미터 미입력시 기본페이지 셋팅
     public Page(){
         this.pageNo = 1;
