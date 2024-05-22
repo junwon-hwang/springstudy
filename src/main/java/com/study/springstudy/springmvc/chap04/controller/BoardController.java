@@ -2,6 +2,7 @@ package com.study.springstudy.springmvc.chap04.controller;
 
 
 import com.study.springstudy.springmvc.chap04.common.Page;
+import com.study.springstudy.springmvc.chap04.common.PageMaker;
 import com.study.springstudy.springmvc.chap04.dto.BoardDetailReponseDto;
 import com.study.springstudy.springmvc.chap04.dto.BoardListResponseDto;
 import com.study.springstudy.springmvc.chap04.dto.BoardWriteRequestDto;
@@ -34,8 +35,13 @@ public class BoardController {
         // 1. 서비스에서 조회 요청 위임
         List<BoardListResponseDto> bList = service.findAll(page);
 
-        // 2. JSP파일에 해당 목록데이터롤 보냄
+        // 2. 페이지 정보를 생성하여 JSP에게 전송
+        PageMaker maker = new PageMaker(page);
+
+
+        // 3. JSP파일에 해당 목록데이터롤 보냄
         model.addAttribute("bList",bList);
+        model.addAttribute("maker",maker);
 
         return "/board/list";
     }

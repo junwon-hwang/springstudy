@@ -2,14 +2,20 @@ package com.study.springstudy.springmvc.chap04.common;
 
 import lombok.*;
 
-@Getter @Setter @ToString
+@Getter @ToString
 @EqualsAndHashCode
 @AllArgsConstructor
-@NoArgsConstructor
 public class Page {
 
     private int pageNo; // 클라이언트가 요청한 페이지번호
     private int amount; // 클라이언트가 요청한 한 페이지당 게시물 목록 수
+
+
+    // 파라미터 미입력시 기본페이지 셋팅
+    public Page(){
+        this.pageNo = 1;
+        this.amount = 6;
+    }
 
 
     /*
@@ -40,4 +46,22 @@ public class Page {
 
     }
 
+    // SET를 통해서 파라미터의 값을 제어함
+    // 페이지 1보다 작은수 방지 , 너무 큰수 방지 범위 초과시 1페이지 출력
+    public void setPageNo(int pageNo) {
+        if(pageNo < 1 || pageNo >Integer.MAX_VALUE){
+            this.pageNo =1;
+            return;
+        }
+        this.pageNo = pageNo;
+    }
+
+
+    public void setAmount(int amount) {
+        if(amount < 6 || amount > 60){
+            this.amount = 6;
+            return;
+        }
+        this.amount = amount;
+    }
 }
