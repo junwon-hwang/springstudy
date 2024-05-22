@@ -18,6 +18,9 @@ public class PageMaker {
     // 페이지 시작번호와 끝번호
     private int begin, end;
 
+    // 이전, 다음버튼 활성화 여부
+    private boolean prev, next;
+
     // 총 게시물 수
     private int totalCount;
 
@@ -87,6 +90,12 @@ public class PageMaker {
         if(finalPage < this.end){
             this.end = finalPage;
         }
+
+        // 4. 이전버튼 활성화 여부
+        this.prev = begin != 1;
+
+        // 5. 다음버튼 활성화 여부
+        this.next = this.end < finalPage;
 
     }
 
