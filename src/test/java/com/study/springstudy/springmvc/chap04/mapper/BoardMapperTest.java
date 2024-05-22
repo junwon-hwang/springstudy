@@ -16,62 +16,17 @@ class BoardMapperTest {
     BoardMapper mapper;
 
     @Test
-    @DisplayName("전체조회")
-    void findAllTest() {
-        //given
+    @DisplayName("")
+    void insertTest(){
+        for (int i = 1; i <=300 ; i++) {
+            Board board = new Board();
+            board.setTitle("테스트제목"+i);
+            board.setWriter("글쓴이"+i);
+            board.setContent("글내용"+i);
 
-        //when
-        List<Board> boardList = mapper.findAll();
-        //then
-        System.out.println("boardList = " + boardList);
+            mapper.save(board);
+        }
     }
-
-    @Test
-    @DisplayName("삭제")
-    void deleteTest() {
-        //given
-        int boardNo = 18;
-        //when
-        boolean delete = mapper.delete(18);
-        //then
-        System.out.println("delete = " + delete);
-
-    }
-
-
-    @Test
-    @DisplayName("개별조회")
-    void findOneTest() {
-        //given
-        int boardNo = 20;
-        //when
-        Board one = mapper.findOne(20);
-        //then
-        System.out.println("one = " + one);
-    }
-
-    @Test
-    @DisplayName("뷰카운트")
-    void viewCountTest() {
-        //given
-        int boardNo = 21;
-        //when
-        mapper.upViewCount(21);
-        //then
-    }
-
-    @Test
-    @DisplayName("저장")
-    void saveTest() {
-        //given
-        BoardWriteRequestDto board = new BoardWriteRequestDto("하2","하2","하2");
-        //when
-        boolean save = mapper.save(board);
-        //then
-        System.out.println("save = " + save);
-    }
-
-
 
 
 }
