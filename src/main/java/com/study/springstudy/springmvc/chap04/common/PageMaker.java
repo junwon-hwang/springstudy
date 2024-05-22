@@ -16,7 +16,7 @@ public class PageMaker {
     private static final int PAGE_COUNT = 10;
 
     // 페이지 시작번호와 끝번호
-    private int begin, end;
+    private int begin, end, finalPage;
 
     // 이전, 다음버튼 활성화 여부
     private boolean prev, next;
@@ -33,12 +33,6 @@ public class PageMaker {
         makePageInfo();
     }
 
-
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(begin, end, pageInfo);
-    }
 
     // 페이지 생성에 필요한 데이터를 만드는 알고리즘
     private void makePageInfo(){
@@ -65,6 +59,8 @@ public class PageMaker {
         this.begin = this.end - PAGE_COUNT + 1;
 
 
+
+
         // 3. 마지막 페이지 구간에서 end값 보정
         /*
             총 게시물이 237개이고 한 화면에 게시물을 10개씩 배치하고 있다면
@@ -84,7 +80,7 @@ public class PageMaker {
 
          */
 
-        int finalPage = (int) Math.ceil((double) totalCount / pageInfo.getAmount());
+        this.finalPage = (int) Math.ceil((double) totalCount / pageInfo.getAmount());
 
         // 마지막 구간에서 end값을 finalpage으로 보정
         if(finalPage < this.end){
@@ -96,6 +92,7 @@ public class PageMaker {
 
         // 5. 다음버튼 활성화 여부
         this.next = this.end < finalPage;
+
 
     }
 
