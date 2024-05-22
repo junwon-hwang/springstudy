@@ -48,4 +48,7 @@ public class BoardService {
         return new BoardDetailReponseDto(view);
     }
 
+    public int getCount() {
+        return mapper.count();
+    }
 }

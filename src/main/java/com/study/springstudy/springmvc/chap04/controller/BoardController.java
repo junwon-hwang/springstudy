@@ -36,7 +36,7 @@ public class BoardController {
         List<BoardListResponseDto> bList = service.findAll(page);
 
         // 2. 페이지 정보를 생성하여 JSP에게 전송
-        PageMaker maker = new PageMaker(page);
+        PageMaker maker = new PageMaker(page, service.getCount());
 
 
         // 3. JSP파일에 해당 목록데이터롤 보냄

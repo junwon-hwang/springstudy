@@ -33,4 +33,9 @@
         WHERE board_no= ${board_no}
     </update>
 
+    <select id="count" resultType="int">
+        SELECT COUNT(*)
+        FROM tbl_board
+    </select>
+
 </mapper>
