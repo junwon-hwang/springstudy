@@ -123,5 +123,10 @@
     </div>
 
 </div>
+
+<c:forEach var="r" items="${bbb.replies}">
+    <div style="font-size: 24px;">${r}</div>
+</c:forEach>
+
 </body>
 </html>

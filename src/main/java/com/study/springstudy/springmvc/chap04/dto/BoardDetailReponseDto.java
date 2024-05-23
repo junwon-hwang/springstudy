@@ -1,9 +1,12 @@
 package com.study.springstudy.springmvc.chap04.dto;
 
 import com.study.springstudy.springmvc.chap04.entity.Board;
+import com.study.springstudy.springmvc.chap05.entity.Reply;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Getter
 public class BoardDetailReponseDto {
@@ -13,6 +16,9 @@ public class BoardDetailReponseDto {
     private String title;
     private String content;
     private String regDateTime;
+
+    @Setter
+    private List<Reply> replies;
 
     public BoardDetailReponseDto(Board b){
         this.boardNo = b.getBoardNo();
