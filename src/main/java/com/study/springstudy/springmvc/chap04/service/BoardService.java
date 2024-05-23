@@ -49,7 +49,7 @@ public class BoardService {
         return new BoardDetailReponseDto(view);
     }
 
-    public int getCount() {
-        return mapper.count();
+    public int getCount(Search search) {
+        return mapper.count(search);
     }
 }

@@ -12,10 +12,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 
@@ -31,18 +33,19 @@ public class BoardController {
 
     // 1. 목록 조회 요청 (/board/list : GET)
     @GetMapping("/list")
-    public String show(Search page , Model model){
+    public String show(@ModelAttribute("s") Search page , Model model){
 
         // 1. 서비스에서 조회 요청 위임
         List<BoardListResponseDto> bList = service.findAll(page);
 
         // 2. 페이지 정보를 생성하여 JSP에게 전송
-        PageMaker maker = new PageMaker(page, service.getCount());
+        PageMaker maker = new PageMaker(page, service.getCount(page));
 
 
         // 3. JSP파일에 해당 목록데이터롤 보냄
         model.addAttribute("bList",bList);
         model.addAttribute("maker",maker);
+//        model.addAttribute("s",page);
 
         return "/board/list";
     }
@@ -72,10 +75,15 @@ public class BoardController {
 
     // 5. 게시글 상세 조회 (/board/detail : GET)
     @GetMapping("/detail")
-    public String detail(int bno,Model model){
+    public String detail(int bno, Model model, HttpServletRequest request){
 
 
         model.addAttribute("bbb",service.findOne(bno));
+
+
+        // 요청 헤더를 파싱하여 이전 페이지의 주소를 얻어냄
+        String ref = request.getHeader("Referer");
+        model.addAttribute("ref",ref);
 
         return "/board/detail";
     }
