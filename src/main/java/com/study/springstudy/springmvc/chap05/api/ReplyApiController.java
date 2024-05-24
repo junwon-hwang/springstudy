@@ -2,6 +2,7 @@ package com.study.springstudy.springmvc.chap05.api;
 
 import com.study.springstudy.springmvc.chap05.Service.ReplyService;
 import com.study.springstudy.springmvc.chap05.dto.reponse.ReplyDetailDto;
+import com.study.springstudy.springmvc.chap05.dto.request.ReplyPostDto;
 import com.study.springstudy.springmvc.chap05.entity.Reply;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,4 +44,25 @@ public class ReplyApiController {
                 .ok()
                 .body(replies);
     }
+
+    // 댓글 생성 요청
+    // @RequestBody : 클라이언트가 전송한 데이터를 JSON으로 받아서 파싱
+    @PostMapping
+    public ResponseEntity<?>posts(@RequestBody ReplyPostDto dto){
+
+        log.info("/api/v1/replies : POST");
+        log.debug("parameter: {}",dto);
+
+        boolean flag = replyService.register(dto);
+
+        if(!flag) return ResponseEntity.internalServerError().body("댓글 등록 실패!");
+
+        return ResponseEntity
+                .ok()
+                .body(replyService.getReplies(dto.getBno()));
+
+    }
+
+
+
 }
