@@ -9,7 +9,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -52,8 +54,13 @@ public class ReplyService {
 
     }
 
+    @Transactional
     // 댓글 삭제
-    public void remove(){
-
+    public List<ReplyDetailDto> remove(long rno){
+        // 댓글 번호로 원본 글번호 찾기
+        long bno = replyMapper.findBno(rno);
+        // 삭제 후 삭제된 목록을 리턴
+        boolean flag = replyMapper.delete(rno);
+        return flag? getReplies(bno) : Collections.emptyList();
     }
 }
