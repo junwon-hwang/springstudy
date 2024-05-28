@@ -1,0 +1,34 @@
+package com.study.springstudy.springmvc.chap05.dto.reponse;
+
+import com.study.springstudy.springmvc.chap04.common.PageMaker;
+import lombok.*;
+
+import java.util.List;
+
+@Getter @ToString
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+
+/*
+    {
+        "replies":[
+            {},{},{}
+        ]
+    }
+
+ */
+
+public class ReplyListDto {
+
+    /*
+        [
+          {},{},{}
+        ]
+     */
+
+    private PageMaker pageInfo;
+    private List<ReplyDetailDto> replies;
+
+
+}

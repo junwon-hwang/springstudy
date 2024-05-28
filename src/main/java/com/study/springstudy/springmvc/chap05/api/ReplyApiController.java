@@ -3,6 +3,7 @@ package com.study.springstudy.springmvc.chap05.api;
 import com.study.springstudy.springmvc.chap04.common.Page;
 import com.study.springstudy.springmvc.chap05.Service.ReplyService;
 import com.study.springstudy.springmvc.chap05.dto.reponse.ReplyDetailDto;
+import com.study.springstudy.springmvc.chap05.dto.reponse.ReplyListDto;
 import com.study.springstudy.springmvc.chap05.dto.request.ReplyPostDto;
 import com.study.springstudy.springmvc.chap05.entity.Reply;
 import lombok.RequiredArgsConstructor;
@@ -44,7 +45,7 @@ public class ReplyApiController {
 
         log.info("/api/v1/replies/{} : GET", bno);
 
-        List<ReplyDetailDto> replies = replyService.getReplies(bno,new Page(pageNo,10));
+        ReplyListDto replies = replyService.getReplies(bno,new Page(pageNo,10));
 //        log.debug("first reply: {}",replies.get(0));
 
         return ResponseEntity
@@ -97,7 +98,7 @@ public class ReplyApiController {
     @DeleteMapping("/{rno}")
     public ResponseEntity<?> delete(@PathVariable long rno) {
 
-        List<ReplyDetailDto> dtoList = replyService.remove(rno);
+        ReplyListDto  dtoList = replyService.remove(rno);
 
         return ResponseEntity
                 .ok()
