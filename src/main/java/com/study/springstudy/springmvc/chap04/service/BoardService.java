@@ -49,10 +49,10 @@ public class BoardService {
         Board view = boardMapper.findOne(bno);
         if(view != null) boardMapper.upViewCount(bno);
 
-        List<Reply> replies = replyMapper.findAll(bno);
+//        List<Reply> replies = replyMapper.findAll(bno);
 
         BoardDetailReponseDto responseDto = new BoardDetailReponseDto(view);
-        responseDto.setReplies(replies);
+//        responseDto.setReplies(replies);
 
         return responseDto;
     }
