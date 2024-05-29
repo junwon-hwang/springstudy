@@ -1,6 +1,6 @@
 
 import { BASE_URL } from "./reply.js";
-import { renderReplies } from "./getReply.js";
+import { fetchInfScrollReplies } from "./getReply.js";
 
 // 서버에 댓글 등록을 요청하는 비동기 함수
 export const fetchReplyPost = async () => {
@@ -30,6 +30,6 @@ export const fetchReplyPost = async () => {
   writerInput.value = '';
 
   // console.log(replies);
-  renderReplies(replies);
-
+  // renderReplies(replies);
+  fetchInfScrollReplies();
 };
