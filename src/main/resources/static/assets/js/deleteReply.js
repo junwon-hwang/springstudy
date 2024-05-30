@@ -14,6 +14,7 @@ const fetchDeleteReply = async (rno) => {
   }
 
   fetchInfScrollReplies();
+  window.scrollTo(0,0); // 삭제 후 페이지 상단 이동
 };
 
 // 댓글 삭제 처리 이벤트 등록 함수

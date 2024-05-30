@@ -4,6 +4,7 @@ import com.study.springstudy.springmvc.chap04.common.Page;
 import com.study.springstudy.springmvc.chap04.common.PageMaker;
 import com.study.springstudy.springmvc.chap05.dto.reponse.ReplyDetailDto;
 import com.study.springstudy.springmvc.chap05.dto.reponse.ReplyListDto;
+import com.study.springstudy.springmvc.chap05.dto.request.ReplyModifyDto;
 import com.study.springstudy.springmvc.chap05.dto.request.ReplyPostDto;
 import com.study.springstudy.springmvc.chap05.entity.Reply;
 import com.study.springstudy.springmvc.chap05.mapper.ReplyMapper;
@@ -71,5 +72,13 @@ public class ReplyService {
         // 삭제 후 삭제된 목록을 리턴
         boolean flag = replyMapper.delete(rno);
         return flag? getReplies(bno,new Page(1,10)) : null;
+    }
+
+    // 댓글 수정
+    public ReplyListDto modify(ReplyModifyDto dto) {
+
+        replyMapper.modify(dto.toEntity());
+
+        return getReplies(dto.getBno(), new Page(1, 10));
     }
 }
