@@ -123,6 +123,8 @@
   </div>
 </div>
 
+<script type="module" src="/assets/js/signUp.js"></script>
+
 
 </body>
 </html>

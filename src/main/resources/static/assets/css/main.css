@@ -1,4 +1,4 @@
-m * {
+* {
     box-sizing: border-box;
 }
 
@@ -10,6 +10,14 @@ body {
 button {
     outline: none;
     border: none;
+}
+
+.warning{
+    color: red;
+}
+
+.success{
+    color: skyblue;
 }
 
 
