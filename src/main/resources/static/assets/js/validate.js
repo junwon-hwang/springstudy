@@ -22,8 +22,10 @@ const namePattern = /^[가-힣]+$/;
 // 이메일 패턴: 기본적인 이메일 형식
 const emailPattern = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
 
+
 export const validateInput = {
-  // 아이디 유효성 검사 함수
+
+      // 아이디 유효성 검사 함수
   account: async (value) => {
     // 빈 값 검사
     if (!value.trim()) return { valid: false, message: '아이디는 필수값입니다!' };
@@ -33,7 +35,9 @@ export const validateInput = {
     const isAvailable = await checkAvailability('account', value);
     // 중복 여부에 따라 결과 반환
     return isAvailable ? { valid: true } : { valid: false, message: '아이디가 중복되었습니다.' };
+   
   },
+
   // 비밀번호 유효성 검사 함수
   password: (value) => {
     // 빈 값 검사
@@ -52,6 +56,7 @@ export const validateInput = {
     // 유효한 경우
     return { valid: true };
   },
+
   // 이름 유효성 검사 함수
   name: (value) => {
     // 빈 값 검사
@@ -71,5 +76,6 @@ export const validateInput = {
     const isAvailable = await checkAvailability('email', value);
     // 중복 여부에 따라 결과 반환
     return isAvailable ? { valid: true } : { valid: false, message: '이메일이 중복되었습니다.' };
-  }
+  },
+
 };

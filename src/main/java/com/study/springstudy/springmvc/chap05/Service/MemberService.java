@@ -1,4 +1,4 @@
-package com.study.springstudy.springmvc.chap05.service;
+package com.study.springstudy.springmvc.chap05.Service;
 
 import com.study.springstudy.springmvc.chap05.Service.LoginResult;
 import com.study.springstudy.springmvc.chap05.dto.request.LoginDto;
@@ -65,6 +65,8 @@ public class MemberService {
     public boolean checkIdentifier(String type, String keyword){
         return memberMapper.existsById(type,keyword);
     }
+
+
 
 
 }

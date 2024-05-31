@@ -3,7 +3,7 @@ package com.study.springstudy.springmvc.chap05.dto.request;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
-@Getter @ToString
+@Getter @Setter @ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
