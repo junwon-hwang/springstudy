@@ -41,7 +41,7 @@ public class BoardService {
 
         Board b = dto.toEntity();
         // 계정명을 엔터티에 추가 - 세션에서 계정명 가져오기
-        b.setAccount(LoginUtil.getLoggedUserAccount(session));
+        b.setAccount(LoginUtil.getLoggedInUserAccount(session));
 
         return boardMapper.save(b);
 
