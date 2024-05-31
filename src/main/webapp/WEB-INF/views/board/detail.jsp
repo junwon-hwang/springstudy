@@ -133,7 +133,7 @@
             <%@ include file="../include/header.jsp"%>
             <div id="wrap" class="form-container" data-bno="${bbb.boardNo}">
 
-                <h1>${bbb.boardNo}번 게시물 내용~ </h1>
+                <h1>${requestScope.bbb.boardNo}번 게시물 내용~ </h1>
                 <h2># 작성일자: ${bbb.regDateTime}</h2>
                 <label for="writer">작성자</label>
                 <input type="text" id="writer" name="writer" value="${bbb.writer}" readonly>
