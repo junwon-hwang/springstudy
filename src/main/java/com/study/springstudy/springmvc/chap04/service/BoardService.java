@@ -7,11 +7,14 @@ import com.study.springstudy.springmvc.chap04.dto.BoardListResponseDto;
 import com.study.springstudy.springmvc.chap04.dto.BoardWriteRequestDto;
 import com.study.springstudy.springmvc.chap04.entity.Board;
 import com.study.springstudy.springmvc.chap04.mapper.BoardMapper;
+import com.study.springstudy.springmvc.chap05.dto.request.LoginDto;
 import com.study.springstudy.springmvc.chap05.mapper.ReplyMapper;
 import com.study.springstudy.springmvc.chap05.entity.Reply;
+import com.study.springstudy.springmvc.util.LoginUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,9 +37,12 @@ public class BoardService {
         return bList;
     }
 
-    public boolean save(BoardWriteRequestDto dto) {
+    public boolean save(BoardWriteRequestDto dto, HttpSession session) {
 
         Board b = dto.toEntity();
+        // 계정명을 엔터티에 추가 - 세션에서 계정명 가져오기
+        b.setAccount(LoginUtil.getLoggedUserAccount(session));
+
         return boardMapper.save(b);
 
     }
