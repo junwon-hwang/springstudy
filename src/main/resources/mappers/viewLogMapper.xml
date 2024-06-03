@@ -19,7 +19,7 @@
               AND board_no = #{boardNo}
     </update>
 
-    <select id="findOne" resultType="=viewLog">
+    <select id="findOne" resultType="viewLog">
         SELECT *
         FROM view_Log
         WHERE account = #{account}
