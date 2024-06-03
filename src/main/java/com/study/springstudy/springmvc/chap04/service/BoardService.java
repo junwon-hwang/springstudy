@@ -8,10 +8,13 @@ import com.study.springstudy.springmvc.chap04.dto.BoardWriteRequestDto;
 import com.study.springstudy.springmvc.chap04.entity.Board;
 import com.study.springstudy.springmvc.chap04.mapper.BoardMapper;
 import com.study.springstudy.springmvc.chap05.dto.request.LoginDto;
+import com.study.springstudy.springmvc.chap05.entity.viewLog;
 import com.study.springstudy.springmvc.chap05.mapper.ReplyMapper;
 import com.study.springstudy.springmvc.chap05.entity.Reply;
+import com.study.springstudy.springmvc.chap05.mapper.viewLogMapper;
 import com.study.springstudy.springmvc.util.LoginUtil;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.WebUtils;
 
@@ -27,12 +30,11 @@ import static com.study.springstudy.springmvc.util.LoginUtil.*;
 
 @Service
 @AllArgsConstructor
-
+@Builder
 public class BoardService {
 
     private final BoardMapper boardMapper;
-    private final ReplyMapper replyMapper;
-    private final LoginDto dto;
+    private final viewLogMapper viewLogMapper;
 
     public List<BoardListResponseDto> findAll(Search page) {
         List<BoardFindAllDto> boardList = boardMapper.findAll(page);
@@ -72,12 +74,55 @@ public class BoardService {
         //  회원 자기가 쓴글은 조회수 상승 O
         //  회원 타인의 글 조회수 확인시 상승 O => 1시간에 한번만 가능
 
-        if(!isLoggedIn(session)|| isMine(view.getAccount(), getLoggedInUserAccount(session))){
-            return  new BoardDetailReponseDto(view);
+        String currentUserAccount = getLoggedInUserAccount(session); // 로그인 계정명
+        int boardNo = view.getBoardNo();
+
+        if (!isLoggedIn(session) || isMine(view.getAccount(), currentUserAccount)) {
+            return new BoardDetailReponseDto(view);
 
         }
-        if(shouldIncreaseViewCount(bno,request,response)) boardMapper.upViewCount(bno);
+
+        // 조회수가 올라가는 조건 처리 (쿠키버전)
+        // if(shouldIncreaseViewCount(bno,request,response)) boardMapper.upViewCount(bno);
+        // return new BoardDetailReponseDto(view);
+
+        // 조회수가 올라가는 조건 처리 (데이터베이스 버전)
+
+        // 1. 조회하는 글이 기록에 있는지 확인
+        viewLog viewLog = viewLogMapper.findOne(currentUserAccount, boardNo);
+        boolean shouldIncrease = false; // 조회수 올려도 되는지??
+        viewLog viewLogEntity = viewLog.builder()
+                .account(currentUserAccount)
+                .boardNo(boardNo)
+                .viewTime(LocalDateTime.now())
+                .build();
+
+        if (viewLog == null) {
+            // 2. 이 게시물이 해당 회원에 의해서 처음 조회됨
+            viewLogMapper.insertViewLog(viewLog.builder()
+                    .account(currentUserAccount)
+                    .boardNo(boardNo)
+                    .viewTime(LocalDateTime.now())
+                    .build()
+            );
+            shouldIncrease = true;
+        } else{
+            // 3. 조회기록이 있는 경우 - 1시간 이내 인지
+            // 혹시 1시간이 지난 게시물 인지 확인
+            LocalDateTime oneHourAgo = LocalDateTime.now().minusHours(1);
+            if(viewLog.getViewTime().isBefore(oneHourAgo)){
+               // 4. db에서 view_time 수정
+                // 4. db에서 view_time 수정
+                viewLogMapper.updateViewLog(viewLogEntity);
+                shouldIncrease = true;
+
+            }
+        }
+        if (shouldIncrease) {
+            boardMapper.upViewCount(boardNo);
+        }
         return new BoardDetailReponseDto(view);
+
     }
 
     // 조회수 증가 여부를 판단
@@ -120,3 +165,61 @@ public class BoardService {
         return boardMapper.count(search);
     }
 }
+
+//
+//      게시물          게시물_해시태그                 해시태그
+//
+//         M              1                               N
+//
+//
+//      tbl_board         tbl_hash_tag               tbl_board_tag
+//  ==========================================================================
+//
+//      bno (글번호)         tag_no(해시태그번호)           id (PK)
+//      title                       tag_title           bno (FK)
+//      writer                                         tag_no(FK)
+//          …
+//
+//
+//              게시물
+//              =========================
+//
+//              bno     title    writer
+//              ——————————————————————-
+//               1       aaa     kim
+//               2       bbb     kim
+//               3       ccc     park
+//
+//                  중간테이블
+//              ==================
+//           id     bno    tag_no
+//           1       1           2
+//           2       1           3
+//           3       2           1
+//           4       2           3
+//           5       2           4
+//
+//
+//
+//                  해시태그
+//          =========================
+//
+//              tag_no     tag_title
+//          ——————————————————————
+//               1           #칼퇴
+//               2           #이대맛집
+//               3           #날씨
+//               4           #공부
+//
+//
+//
+//
+//
+//
+//
+//                  회원    게시물
+//                   1          M
+//
+//                   FK (account)
+//
+//
