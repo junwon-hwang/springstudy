@@ -2,11 +2,13 @@ package com.study.springstudy.springmvc.chap05.dto.request;
 
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 @Getter @Setter @ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Component
 public class LoginDto {
 
     private String account;

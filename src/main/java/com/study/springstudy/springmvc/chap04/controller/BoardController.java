@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -72,11 +73,14 @@ public class BoardController {
     }
 
     // 5. 게시글 상세 조회 (/board/detail : GET)
+    //  비회원 조회수 상승  X
+    //  회원 자기가 쓴글은 조회수 상승 O
+    //  회원 타인의 글 조회수 확인시 상승 O => 1시간에 한번만 가능
     @GetMapping("/detail")
-    public String detail(int bno, Model model, HttpServletRequest request){
+    public String detail(int bno, Model model, HttpServletRequest request, HttpServletResponse response){
 
 
-        model.addAttribute("bbb",service.findOne(bno));
+        model.addAttribute("bbb",service.findOne(bno,request,response));
 
 
         // 요청 헤더를 파싱하여 이전 페이지의 주소를 얻어냄
