@@ -16,6 +16,7 @@ public class BoardDetailReponseDto {
     private String title;
     private String content;
     private String regDateTime;
+    private String account;
 
     @Setter
     private List<Reply> replies;
@@ -29,6 +30,7 @@ public class BoardDetailReponseDto {
         DateTimeFormatter pattern = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 a hh시 mm분 ss초");
         this.regDateTime = pattern.format(b.getRegDateTime());
 
+        this.account = b.getAccount();
     }
 
 

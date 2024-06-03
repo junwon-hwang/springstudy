@@ -11,10 +11,7 @@ import com.study.springstudy.springmvc.chap04.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 
 import javax.servlet.http.HttpServletRequest;
@@ -69,7 +66,7 @@ public class BoardController {
     // 4. 게시글 삭제 요청 (/board/delete : GET)
     // -> 목록조회 요청 리다이렉션
     @GetMapping("/delete")
-    public String delete(int bno){
+    public String delete(@RequestParam int bno){
         service.delete(bno);
         return "redirect:/board/list";
     }
