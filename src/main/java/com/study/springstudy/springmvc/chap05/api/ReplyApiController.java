@@ -2,11 +2,10 @@ package com.study.springstudy.springmvc.chap05.api;
 
 import com.study.springstudy.springmvc.chap04.common.Page;
 import com.study.springstudy.springmvc.chap05.Service.ReplyService;
-import com.study.springstudy.springmvc.chap05.dto.reponse.ReplyDetailDto;
 import com.study.springstudy.springmvc.chap05.dto.reponse.ReplyListDto;
 import com.study.springstudy.springmvc.chap05.dto.request.ReplyModifyDto;
 import com.study.springstudy.springmvc.chap05.dto.request.ReplyPostDto;
-import com.study.springstudy.springmvc.chap05.entity.Reply;
+import com.study.springstudy.springmvc.util.LoginUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +34,7 @@ public class ReplyApiController {
     // @GetMapping("/{bno}") @PathVariable long bno 파라미터 맞춰야함
 
     @GetMapping("/{bno}/page/{pageNo}")
-    public ResponseEntity<?> list(@PathVariable long bno, @PathVariable int pageNo){
+    public ResponseEntity<?> list(@PathVariable long bno, @PathVariable int pageNo , HttpSession session){
 
         if(bno == 0){
             String message = "글 번호는 0번이 될 수 없습니다.";
@@ -49,6 +48,7 @@ public class ReplyApiController {
 
         ReplyListDto replies = replyService.getReplies(bno,new Page(pageNo,10));
 //        log.debug("first reply: {}",replies.get(0));
+        replies.setLoginUser(LoginUtil.getLoggedInUser(session));
 
         return ResponseEntity
                 .ok()
@@ -116,6 +116,7 @@ public class ReplyApiController {
     public ResponseEntity<?> modify(
             @Validated @RequestBody ReplyModifyDto dto
             , BindingResult result
+
     ) {
 
         log.info("/api/v1/replies : PUT, PATCH");

@@ -5,7 +5,7 @@ import lombok.*;
 
 import java.util.List;
 
-@Getter @ToString
+@Getter @Setter @ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -27,6 +27,7 @@ public class ReplyListDto {
         ]
      */
 
+    private LoginUserInfoDto loginUser;
     private PageMaker pageInfo;
     private List<ReplyDetailDto> replies;
 

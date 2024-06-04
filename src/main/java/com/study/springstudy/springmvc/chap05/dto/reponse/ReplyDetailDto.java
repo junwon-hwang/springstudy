@@ -22,6 +22,7 @@ public class ReplyDetailDto {
 
 //    @JsonFormat(pattern = "yyyy년 MM월 dd일 HH:mm")
     private LocalDateTime createAt;
+    private String account;
 
     // 엔터티를 DTO로 변환하는 생성자 만들기
     public ReplyDetailDto(Reply r){
@@ -29,6 +30,7 @@ public class ReplyDetailDto {
         this.text = r.getReplyText();
         this.writer = r.getReplyWriter();
         this.createAt = r.getReplyDate();
+        this.account = r.getAccount();
     }
 
 
