@@ -47,3 +47,4 @@ public class AutoLoginInterceptor implements HandlerInterceptor {
         return true;
     }
 }
+

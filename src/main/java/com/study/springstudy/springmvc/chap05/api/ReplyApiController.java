@@ -15,6 +15,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -97,9 +98,9 @@ public class ReplyApiController {
 
     // 삭제 처리 요청
     @DeleteMapping("/{rno}")
-    public ResponseEntity<?> delete(@PathVariable long rno) {
+    public ResponseEntity<?> delete(@PathVariable long rno, HttpSession session) {
 
-        ReplyListDto  dtoList = replyService.remove(rno);
+        ReplyListDto  dtoList = replyService.remove(rno,session);
 
         return ResponseEntity
                 .ok()

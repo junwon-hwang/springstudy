@@ -1,5 +1,6 @@
 import { BASE_URL } from './reply.js';
 import { showSpinner, hideSpinner } from './spinner.js';
+import { callApi } from './api.js';
 
 function getRelativeTime(createAt) {
   // 현재 시간 구하기
@@ -103,8 +104,11 @@ export function renderReplies({ pageInfo, replies }) {
 export async function fetchReplies(pageNo=1) {
   const bno = document.getElementById('wrap').dataset.bno; // 게시물 글번호
 
-  const res = await fetch(`${BASE_URL}/${bno}/page/${pageNo}`);
-  const replyResponse = await res.json();
+
+  const replyResponse = await callApi(`${BASE_URL}/${bno}/page/${pageNo}`);
+
+  // const res = await fetch(`${BASE_URL}/${bno}/page/${pageNo}`);
+  // const replyResponse = await res.json();
   // { pageInfo: {}, replies: [] }
 
   // 댓글 목록 렌더링
@@ -161,6 +165,7 @@ function appendReplies({ replies }) {
     tag = `<div id='replyContent' class='card-body'>댓글이 아직 없습니다! ㅠㅠ</div>`;
   }
   document.getElementById('replyData').innerHTML += tag;
+  console.log('append replies');
 
   // 로드된 댓글 수 업데이트
   loadedReplies += replies.length;
@@ -186,7 +191,8 @@ export async function fetchInfScrollReplies(pageNo=1) {
     document.getElementById('replyCnt').textContent = totalReplies;
     // 초기 댓글 reset
     document.getElementById('replyData').innerHTML = '';
-
+    console.log('reset replyData');
+    
     setupInfiniteScroll();
   }
 
@@ -199,7 +205,7 @@ export async function fetchInfScrollReplies(pageNo=1) {
 
   // 댓글을 전부 가져올 시 스크롤 이벤트 제거하기
   if (loadedReplies >= totalReplies) {
-    window.removeEventListener('scroll', scrollHandler);
+    removeInfiniteScroll();
   }
 
 }
@@ -213,12 +219,13 @@ async function scrollHandler(e) {
     window.innerHeight + window.scrollY >= document.body.offsetHeight + 100
     && !isFetching
   ) {
+    // console.log('occured scroll event');
     // console.log(e);
     // 서버에서 데이터를 비동기로 불러와야 함
     // 2초의 대기열이 생성되면 다음 대기열 생성까지 2초를 기다려야 함.
     showSpinner();
     await new Promise(resolve => setTimeout(resolve, 500));
-    fetchInfScrollReplies(currentPage + 1);
+    await fetchInfScrollReplies(currentPage + 1);
   }
 }
 
@@ -226,3 +233,11 @@ async function scrollHandler(e) {
 export function setupInfiniteScroll() {
   window.addEventListener('scroll', scrollHandler);
 }
+
+// 무한 스크롤 이벤트 삭제 함수
+export function removeInfiniteScroll() {
+  window.removeEventListener('scroll', scrollHandler);
+}
+
+
+

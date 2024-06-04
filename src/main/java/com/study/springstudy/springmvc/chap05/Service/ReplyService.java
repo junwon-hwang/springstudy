@@ -15,17 +15,20 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
+
 public class ReplyService {
 
     private static final Logger log = LoggerFactory.getLogger(ReplyService.class);
     private final ReplyMapper replyMapper;
+
+
 
     // 댓글 목록 전체 조회
     public ReplyListDto getReplies(long boardNo, Page page){
@@ -60,25 +63,24 @@ public class ReplyService {
     }
 
     // 댓글 수정
-    public void modify(){
-
-    }
-
-    @Transactional
-    // 댓글 삭제
-    public ReplyListDto remove(long rno){
-        // 댓글 번호로 원본 글번호 찾기
-        long bno = replyMapper.findBno(rno);
-        // 삭제 후 삭제된 목록을 리턴
-        boolean flag = replyMapper.delete(rno);
-        return flag? getReplies(bno,new Page(1,10)) : null;
-    }
-
-    // 댓글 수정
-    public ReplyListDto modify(ReplyModifyDto dto) {
-
+    public ReplyListDto modify(ReplyModifyDto dto){
         replyMapper.modify(dto.toEntity());
 
         return getReplies(dto.getBno(), new Page(1, 10));
     }
+
+    // 내가쓴댓글이 아니면 수정 삭제 안되게
+    // 로그인 안하면 댓글입력창 X , 링크로 로그인 페이지 연결
+
+    @Transactional
+    // 댓글 삭제
+    public ReplyListDto remove(long rno, HttpSession session) {
+        // 댓글 번호로 원본 글번호 찾기
+        long bno = replyMapper.findBno(rno);
+
+        boolean flag = replyMapper.delete(rno);
+        return flag ? getReplies(bno, new Page(1, 10)) : null;
+
+    }
+
 }
