@@ -8,6 +8,7 @@ import com.study.springstudy.springmvc.chap05.dto.request.ReplyModifyDto;
 import com.study.springstudy.springmvc.chap05.dto.request.ReplyPostDto;
 import com.study.springstudy.springmvc.chap05.entity.Reply;
 import com.study.springstudy.springmvc.chap05.mapper.ReplyMapper;
+import com.study.springstudy.springmvc.util.LoginUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -46,11 +47,12 @@ public class ReplyService {
     }
 
     // 댓글 입력
-    public boolean register(ReplyPostDto dto){
+    public boolean register(ReplyPostDto dto, HttpSession session){
         Reply reply = Reply.builder()
                         .replyText(dto.getText())
                         .replyWriter(dto.getAuthor())
                         .boardNo(dto.getBno())
+                        .account(LoginUtil.getLoggedInUserAccount(session))
                         .build();
 
         boolean flag = replyMapper.save(reply);
