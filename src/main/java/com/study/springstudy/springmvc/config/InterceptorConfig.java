@@ -33,7 +33,8 @@ public class InterceptorConfig implements WebMvcConfigurer {
         registry
                 .addInterceptor(boardInterceptor)
                 .addPathPatterns("/board/*")
-                .excludePathPatterns("/board/list", "/board/detail")
+                .excludePathPatterns("/board/list", "/board/detail"
+                                    ,"/board/like","/board/dislike")
         ;
 
         // 자동 로그인 인터셉터 등록

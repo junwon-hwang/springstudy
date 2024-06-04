@@ -7,12 +7,10 @@ import com.study.springstudy.springmvc.chap04.dto.BoardListResponseDto;
 import com.study.springstudy.springmvc.chap04.dto.BoardWriteRequestDto;
 import com.study.springstudy.springmvc.chap04.entity.Board;
 import com.study.springstudy.springmvc.chap04.mapper.BoardMapper;
-import com.study.springstudy.springmvc.chap05.dto.request.LoginDto;
+import com.study.springstudy.springmvc.chap05.entity.Reaction;
 import com.study.springstudy.springmvc.chap05.entity.viewLog;
-import com.study.springstudy.springmvc.chap05.mapper.ReplyMapper;
-import com.study.springstudy.springmvc.chap05.entity.Reply;
+import com.study.springstudy.springmvc.chap05.mapper.ReactionMapper;
 import com.study.springstudy.springmvc.chap05.mapper.viewLogMapper;
-import com.study.springstudy.springmvc.util.LoginUtil;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import org.springframework.stereotype.Service;
@@ -35,6 +33,7 @@ public class BoardService {
 
     private final BoardMapper boardMapper;
     private final viewLogMapper viewLogMapper;
+    private final ReactionMapper reactionMapper;
 
     public List<BoardListResponseDto> findAll(Search page) {
         List<BoardFindAllDto> boardList = boardMapper.findAll(page);
@@ -77,8 +76,22 @@ public class BoardService {
         String currentUserAccount = getLoggedInUserAccount(session); // 로그인 계정명
         int boardNo = view.getBoardNo();
 
+        // 상세 조회시 초기 렌더링에 그려질 데이터
+        BoardDetailReponseDto responseDto = new BoardDetailReponseDto(view);
+        responseDto.setLikeCount(reactionMapper.countLikes(bno));
+        responseDto.setDislikeCount(reactionMapper.countDisLikes(bno));
+
+        Reaction reaction = reactionMapper.findOne(bno, currentUserAccount);
+
+        String type = null;
+        if(reaction!=null){
+            type = reaction.getReactionType().toString();
+        }
+
+        responseDto.setUserReaction(type);
+
         if (!isLoggedIn(session) || isMine(view.getAccount(), currentUserAccount)) {
-            return new BoardDetailReponseDto(view);
+            return responseDto;
 
         }
 
@@ -121,7 +134,7 @@ public class BoardService {
         if (shouldIncrease) {
             boardMapper.upViewCount(boardNo);
         }
-        return new BoardDetailReponseDto(view);
+        return responseDto;
 
     }
 
