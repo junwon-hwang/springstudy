@@ -9,6 +9,7 @@ import com.study.springstudy.springmvc.util.LoginUtil;
 import com.study.springstudy.webservlet.Model;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -30,7 +31,8 @@ import javax.servlet.http.HttpSession;
 @RequiredArgsConstructor
 public class MemberController {
 
-    private String rootPath ="C:\\spring-rpj\\upload";
+    @Value("${file.upload.root-path}")
+    private String rootPath;
     private final com.study.springstudy.springmvc.chap05.Service.MemberService memberService;
 
     // 회원 가입 양식 열기
@@ -49,10 +51,10 @@ public class MemberController {
         log.debug("attached profile image name {}",dto.getProfileImage().getOriginalFilename());
 
 
-        // 서버에 업로드
-        FileUtil.uploadFile(rootPath,dto.getProfileImage());
+        // 서버에 업로드 후 업로드 경로 반환
+        String profilePath = FileUtil.uploadFile(rootPath, dto.getProfileImage());
 
-        boolean flag = memberService.join(dto);
+        boolean flag = memberService.join(dto,profilePath);
         return flag ? "redirect:/members/sign-in" : "redirect:members/sign-up";
     }
 

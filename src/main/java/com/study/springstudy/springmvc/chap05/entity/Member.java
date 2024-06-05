@@ -14,6 +14,7 @@ CREATE TABLE tbl_member (
  */
 
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 
@@ -34,4 +35,7 @@ public class Member {
     private LocalDateTime regDate;
     private String sessionId;
     private LocalDateTime limitTime;
+
+    @Setter
+    private String profileImg;
 }

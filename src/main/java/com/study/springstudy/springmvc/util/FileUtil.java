@@ -37,7 +37,18 @@ public class FileUtil {
             e.printStackTrace();
         }
 
-        return "";
+        // 업로드가 완료되면 데이터베이스에 파일의 경로 위치를 저장한다.
+        // 확장자 필수 , 파일 경로 코드작성란에 띄어쓰기 절대 금지
+        // ex) ocal/2024/06/05/20c1399b-1522-4ab5-a84b-18e0aac15776_shutterstock_2205178589-1-1.png
+
+        // 파일 전체 경로
+        // fullPath : C:/spring_pr/upload/2024/06/05/20c1399b-1522-4ab5-a84b-18e0aac15776_shutterstock_2205178589-1-1.png
+        String fullPath = newUploadPath +"/" + newFileName;
+
+        // url-path : local/2024/06/05/20c1399b-1522-4ab5-a84b-18e0aac15776_shutterstock_2205178589-1-1.png
+        String urlPath = "/local" + fullPath.substring(rootPath.length());
+
+        return urlPath;
     }
 
     private static String makeDateFormatDirectory(String rootPath) {
