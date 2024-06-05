@@ -39,4 +39,5 @@
         AND reaction_type = 'DISLIKE'
     </select>
 
+
 </mapper>

@@ -1,9 +1,7 @@
 package com.study.springstudy.springmvc.chap05.dto.reponse;
 
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.study.springstudy.springmvc.chap05.entity.Reply;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -24,13 +22,18 @@ public class ReplyDetailDto {
     private LocalDateTime createAt;
     private String account;
 
+    // 클라이언트 개발자가 다른이름으로 요청시
+    //@JsonProperty("profile");
+    private String profileImg;
+
     // 엔터티를 DTO로 변환하는 생성자 만들기
-    public ReplyDetailDto(Reply r){
+    public ReplyDetailDto(ReplyFindAllDto r){
         this.rno = r.getReplyNo();
         this.text = r.getReplyText();
         this.writer = r.getReplyWriter();
         this.createAt = r.getReplyDate();
         this.account = r.getAccount();
+        this.profileImg = r.getProfileImg();
     }
 
 

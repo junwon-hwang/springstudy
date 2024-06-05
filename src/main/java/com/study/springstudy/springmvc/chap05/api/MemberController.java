@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -48,11 +49,17 @@ public class MemberController {
         log.info("/members/sign-up POST");
         log.debug("parameter:{}",dto);
 
-        log.debug("attached profile image name {}",dto.getProfileImage().getOriginalFilename());
+        MultipartFile profileImage = dto.getProfileImage();
+        String profilePath = null;
 
+        if(!profileImage.isEmpty()){
 
-        // 서버에 업로드 후 업로드 경로 반환
-        String profilePath = FileUtil.uploadFile(rootPath, dto.getProfileImage());
+            log.debug("attached profile image name {}", profileImage.getOriginalFilename());
+
+            // 서버에 업로드 후 업로드 경로 반환
+            FileUtil.uploadFile(rootPath, dto.getProfileImage());
+
+        }
 
         boolean flag = memberService.join(dto,profilePath);
         return flag ? "redirect:/members/sign-in" : "redirect:members/sign-up";

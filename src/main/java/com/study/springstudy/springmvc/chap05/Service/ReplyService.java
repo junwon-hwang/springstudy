@@ -3,6 +3,7 @@ package com.study.springstudy.springmvc.chap05.Service;
 import com.study.springstudy.springmvc.chap04.common.Page;
 import com.study.springstudy.springmvc.chap04.common.PageMaker;
 import com.study.springstudy.springmvc.chap05.dto.reponse.ReplyDetailDto;
+import com.study.springstudy.springmvc.chap05.dto.reponse.ReplyFindAllDto;
 import com.study.springstudy.springmvc.chap05.dto.reponse.ReplyListDto;
 import com.study.springstudy.springmvc.chap05.dto.request.ReplyModifyDto;
 import com.study.springstudy.springmvc.chap05.dto.request.ReplyPostDto;
@@ -33,11 +34,12 @@ public class ReplyService {
 
     // 댓글 목록 전체 조회
     public ReplyListDto getReplies(long boardNo, Page page){
-        List<Reply> replies = replyMapper.findAll(boardNo,page);
+        List<ReplyFindAllDto> replies = replyMapper.findAll(boardNo,page);
 
         List<ReplyDetailDto> dtoList = replies.stream()
                 .map(r -> new ReplyDetailDto(r))
                 .collect(Collectors.toList());
+        System.out.println(dtoList);
 
         return ReplyListDto.builder()
                 .replies(dtoList)

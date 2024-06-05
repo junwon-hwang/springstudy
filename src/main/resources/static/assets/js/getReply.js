@@ -139,14 +139,31 @@ function appendReplies({ replies , loginUser}) {
   // 댓글 목록 렌더링
   let tag = '';
   if (replies && replies.length > 0) {
-    replies.forEach(({ reply_no: rno, writer, text, createAt , account : replyAccount}) => {
+    replies.forEach(({ reply_no: rno, writer, text, createAt , account : replyAccount,profileImg}) => {
       tag += `
         <div id='replyContent' class='card-body' data-reply-id='${rno}'>
-            <div class='row user-block'>
-                <span class='col-md-3'>
-                    <b>${writer}</b>
-                </span>
-                <span class='offset-md-6 col-md-3 text-right'><b>${getRelativeTime(
+            <div class='row user-block'>`
+
+       
+
+
+               if (profileImg!=null){
+                tag+=`<span class='col-md-3'>
+                  <b>${writer}</b>
+                  <img src=${profileImg} alt="profile" ID="profileImg">
+                  </span>`
+               } else{
+                tag+=`<span class='col-md-3'>
+                <b>${writer}</b>
+                <img src="/assets/img/anonymous.jpg.jpg" alt="profile" ID="profileImg">
+                </span>`
+               }
+
+               
+
+
+
+                tag+= `<span class='offset-md-6 col-md-3 text-right'><b>${getRelativeTime(
                   createAt
                 )}</b></span>
             </div><br>
@@ -254,3 +271,4 @@ export function removeInfiniteScroll() {
 
 
 
+// 팝업창
