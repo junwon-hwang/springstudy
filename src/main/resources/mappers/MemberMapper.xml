@@ -20,6 +20,7 @@
         , email
         , auth
         , reg_date
+        , profile_img
         FROM tbl_member
         WHERE account = #{account}
     </select>
@@ -43,7 +44,7 @@
 
     <select id="findMemberBySessionId" resultType="member">
         SELECT
-            account, name, email, auth, limit_time
+            account, name, email, auth, limit_time, profile_img
         FROM tbl_member
         WHERE session_id=#{sessionId}
 

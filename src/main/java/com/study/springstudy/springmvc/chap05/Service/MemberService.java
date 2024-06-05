@@ -109,6 +109,7 @@ public class MemberService {
         session.setMaxInactiveInterval(60 * 60); // 세션 수명 1시간 설정
         log.debug("session time: {}", maxInactiveInterval);
 
+        // 세션에 로그인한 회원 정보 셋팅
         session.setAttribute(LOGIN, new LoginUserInfoDto(foundMember));
     }
 
