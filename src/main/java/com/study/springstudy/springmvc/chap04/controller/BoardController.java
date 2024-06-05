@@ -10,6 +10,7 @@ import com.study.springstudy.springmvc.chap05.Service.ReactionService;
 import com.study.springstudy.springmvc.chap05.dto.reponse.ReactionDto;
 import com.study.springstudy.springmvc.util.LoginUtil;
 import lombok.RequiredArgsConstructor;
+import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -45,6 +46,7 @@ public class BoardController {
 
         // 2. 페이지 정보를 생성하여 JSP에게 전송
         PageMaker maker = new PageMaker(page, boardService.getCount(page));
+
 
 
         // 3. JSP파일에 해당 목록데이터롤 보냄
